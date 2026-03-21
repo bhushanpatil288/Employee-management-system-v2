@@ -128,3 +128,13 @@
     @apply font-sans;
     }
 }
+
+
+.active{
+  background-color: var(--color-primary);
+  color: white;
+}
+
+html.dark .active{
+  color: var(--color-secondary);
+}
