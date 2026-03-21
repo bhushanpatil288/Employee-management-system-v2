@@ -59,7 +59,7 @@ const AddEmployees = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      age: 0,
+      age: undefined,
       department: "",
       position: "",
     },
