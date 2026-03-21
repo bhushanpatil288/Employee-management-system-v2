@@ -8,7 +8,7 @@ const Home = () => {
       <div className="w-1/2 p-20 flex flex-col justify-around">
         <div className="flex flex-col justify-center gap-10">
           <h1 className="text-5xl font-semibold text-start">Welcome To Employee Management System</h1>
-          <p className="text-gray-500">A clean and simple Employee Management System to effortlessly add, edit, and manage employee records. Powered by seamless CRUD operations and local storage, it keeps your data محفوظ, fast, and always accessible—no backend needed.</p>
+          <p className="text-gray-500">A clean and simple Employee Management System to effortlessly add, edit, and manage employee records. Powered by seamless CRUD operations and local storage, it keeps your data always accessible—no backend needed.</p>
         </div>
         <div className="flex justify-start gap-3">
           <Link to="/add">

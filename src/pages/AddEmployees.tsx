@@ -8,7 +8,7 @@ import {
   FieldSeparator,
   FieldSet,
 } from "../components/ui/field"
-import { Input } from "../components/ui/input"
+import { Input } from "../components/ui/input";
 import {
   Select,
   SelectContent,
@@ -17,29 +17,67 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../components/ui/select"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, Controller } from "react-hook-form";
+import * as z from "zod";
+import { useEmployees } from "../context/EmployeesContext";
+
+const departments = [
+  { id: 1, name: "Engineering" },
+  { id: 2, name: "Human Resources" },
+  { id: 3, name: "Marketing" },
+  { id: 4, name: "Finance" },
+  { id: 5, name: "Customer Support" }
+];
+
+const positions = [
+  { id: 1, title: "Software Engineer" },
+  { id: 2, title: "HR Manager" },
+  { id: 3, title: "Marketing Specialist" },
+  { id: 4, title: "Financial Analyst" },
+  { id: 5, title: "Support Executive" }
+];
+
+
+const formSchema = z.object({
+  name: z
+    .string()
+    .min(5, "Name should be at least 5 characters")
+    .max(60, "Max 60 characters"),
+  age: z
+    .number({ message: "Age is required" })
+    .min(18, "Age should be at least 18")
+    .max(60, "Age should be at most 60"),
+  department: z.string().min(1, "Please select a department"),
+  position: z.string().min(1, "Please select a position"),
+})
 
 const AddEmployees = () => {
-  const departments = [
-    { id: 1, name: "Engineering" },
-    { id: 2, name: "Human Resources" },
-    { id: 3, name: "Marketing" },
-    { id: 4, name: "Finance" },
-    { id: 5, name: "Customer Support" }
-  ];
+  const { employees, setEmployees } = useEmployees();
 
-  const positions = [
-    { id: 1, title: "Software Engineer" },
-    { id: 2, title: "HR Manager" },
-    { id: 3, title: "Marketing Specialist" },
-    { id: 4, title: "Financial Analyst" },
-    { id: 5, title: "Support Executive" }
-  ];
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      age: 0,
+      department: "",
+      position: "",
+    },
+  })
+
+  const { reset } = form
+
+  function onSubmit(data: z.infer<typeof formSchema>) {
+    setEmployees([...employees, data]);
+    console.log("Form submitted:", data)
+    reset()
+  }
+
   return (
-    <div className="flex justify-center my-50 ">
+    <div className="flex justify-center my-40">
       <div className="w-full max-w-md p-5 shadow-md border rounded">
-        <form className="py-5 px-3">
+        <form className="py-5 px-3" onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
-
             <FieldSet>
               <FieldLegend>Add a New Employee</FieldLegend>
               <FieldDescription>
@@ -47,91 +85,120 @@ const AddEmployees = () => {
               </FieldDescription>
 
               <FieldGroup>
-
                 {/* Name */}
                 <Field>
-                  <FieldLabel htmlFor="name">
-                    Name
-                  </FieldLabel>
+                  <FieldLabel htmlFor="name">Name</FieldLabel>
                   <Input
                     id="name"
                     placeholder="ex. John Doe"
-                    required
+                    {...form.register("name")}
                   />
+                  {form.formState.errors.name && (
+                    <FieldDescription className="text-red-500">
+                      {form.formState.errors.name.message}
+                    </FieldDescription>
+                  )}
                 </Field>
 
                 {/* Age */}
                 <Field>
-                  <FieldLabel htmlFor="age">
-                    Age
-                  </FieldLabel>
+                  <FieldLabel htmlFor="age">Age</FieldLabel>
                   <Input
                     id="age"
+                    type="number"
+                    min={18}
+                    max={60}
                     placeholder="ex. 34"
-                    required
+                    {...form.register("age", { valueAsNumber: true })}
                   />
+                  {form.formState.errors.age && (
+                    <FieldDescription className="text-red-500">
+                      {form.formState.errors.age.message}
+                    </FieldDescription>
+                  )}
                   <FieldDescription>
-                    Age should be greater than 18 and less than 60
+                    Age should be between 18 and 60
                   </FieldDescription>
                 </Field>
 
                 <FieldSeparator />
 
                 <div className="grid grid-cols-2 gap-4">
-                {/* Department */}                  
+                  {/* Department */}
                   <Field>
-                    <FieldLabel htmlFor="department">
-                      Department
-                    </FieldLabel>
-                    <Select defaultValue="" name="department">
-                      <SelectTrigger id="department">
-                        <SelectValue placeholder="Select a Department" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          {departments.map((dept) => {
-                            return (
-                              <SelectItem key={dept.id} value={dept.name}>{(dept.name).toUpperCase()}</SelectItem>
-                            )
-                          })}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
+                    <FieldLabel htmlFor="department">Department</FieldLabel>
+                    <Controller
+                      control={form.control}
+                      name="department"
+                      render={({ field }) => (
+                        <Select value={field.value} onValueChange={field.onChange}>
+                          <SelectTrigger id="department">
+                            <SelectValue placeholder="Select a Department">
+                              {field.value ? field.value.toUpperCase() : null}
+                            </SelectValue>
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              {departments.map((dept) => (
+                                <SelectItem key={dept.id} value={dept.name}>
+                                  {dept.name.toUpperCase()}
+                                </SelectItem>
+                              ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
+                    {form.formState.errors.department && (
+                      <FieldDescription className="text-red-500">
+                        {form.formState.errors.department.message}
+                      </FieldDescription>
+                    )}
                   </Field>
 
-                {/* Position */}
+                  {/* Position */}
                   <Field>
-                    <FieldLabel htmlFor="position">
-                      position
-                    </FieldLabel>
-                    <Select defaultValue="" name="position">
-                      <SelectTrigger id="position">
-                        <SelectValue placeholder="Select a position" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          {positions.map((pos) => {
-                            return (
-                              <SelectItem key={pos.id} value={pos.title}>{(pos.title).toUpperCase()}</SelectItem>
-                            )
-                          })}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
+                    <FieldLabel htmlFor="position">Position</FieldLabel>
+                    <Controller
+                      control={form.control}
+                      name="position"
+                      render={({ field }) => (
+                        <Select value={field.value} onValueChange={field.onChange}>
+                          <SelectTrigger id="position">
+                            <SelectValue placeholder="Select a Position">
+                              {field.value ? field.value.toUpperCase() : null}
+                            </SelectValue>
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              {positions.map((pos) => (
+                                <SelectItem key={pos.id} value={pos.title}>
+                                  {pos.title.toUpperCase()}
+                                </SelectItem>
+                              ))}
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      )}
+                    />
+                    {form.formState.errors.position && (
+                      <FieldDescription className="text-red-500">
+                        {form.formState.errors.position.message}
+                      </FieldDescription>
+                    )}
                   </Field>
                 </div>
-
               </FieldGroup>
-
             </FieldSet>
 
             <Field orientation="horizontal">
-              <Button type="submit" className="cursor-pointer">Submit</Button>
+              <Button type="submit" className="cursor-pointer">
+                Submit
+              </Button>
               <Button variant="outline" type="button" className="cursor-pointer">
                 Cancel
               </Button>
             </Field>
-
           </FieldGroup>
         </form>
       </div>
