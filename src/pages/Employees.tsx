@@ -4,7 +4,7 @@ import { OctagonX } from "lucide-react"
 import { EditEmployeeModal } from "../components/EmployeesPage/EditEmployeeModal";
 
 const Employees = () => {
-  const { employees } = useEmployees();
+  const { employees, deleteEmployee } = useEmployees();
 
   return (
     <div className="flex justify-center p-3">
@@ -28,7 +28,7 @@ const Employees = () => {
                 <td className="border dark:bg-secondary px-8 py-4">
                   <div className="flex gap-1">
                     <EditEmployeeModal employeeData={e} />
-                    <Button variant={"destructive"} className="cursor-pointer">
+                    <Button variant={"destructive"} className="cursor-pointer" onClick={()=>deleteEmployee(e.id)}>
                       <OctagonX />
                     </Button>
                   </div>
