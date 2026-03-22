@@ -14,20 +14,31 @@ import {
 import { Field, FieldGroup } from "../ui/field"
 import { Input } from "../ui/input"
 import { Label } from "../ui/label"
-import { useState } from "react"
-import { useEmployees } from "../../context/EmployeesContext"
+import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useEmployees, type Employee } from "../../context/EmployeesContext";
 
-export function EditEmployeeModal({employeeData}) {
+export function EditEmployeeModal({
+  employeeData,
+}: {
+  employeeData: Employee;
+}) {
   const { updateEmployee } = useEmployees();
   const [open, setOpen] = useState(false);
 
-  const [ formData, setFormData ] = useState(employeeData);
+  const [formData, setFormData] = useState(employeeData);
 
-  const handleChange = (e) =>{
-    setFormData({...formData, [e.target.name]: e.target.value});
-  }
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const { name, value } = e.target;
+    if (name === "age") {
+      setFormData({ ...formData, age: Number(value) });
+    } else {
+      setFormData({ ...formData, [name]: value } as Employee);
+    }
+  };
 
-  const handleSubmit = (e) =>{
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     updateEmployee(formData);
     setOpen(false);

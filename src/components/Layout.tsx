@@ -4,14 +4,15 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
+} from "@/components/ui/navigation-menu";
 
-import { NavLink } from "react-router-dom"
-import { Button } from "./ui/button"
-import { MoonStar, SunMedium } from "lucide-react"
-import { useTheme } from "../context/ThemeContext"
+import { NavLink } from "react-router-dom";
+import { Button } from "./ui/button";
+import { MoonStar, SunMedium } from "lucide-react";
+import { useTheme } from "../context/ThemeContext";
+import type { ReactNode } from "react";
 
-const Layout = ({ children }) => {
+const Layout = ({ children }: { children: ReactNode }) => {
   const { isDark, setIsDark } = useTheme();
   return (
     <div>

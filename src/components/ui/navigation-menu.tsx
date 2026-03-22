@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components -- exports navigationMenuTriggerStyle for composition */
 import * as React from "react"
 import { cva } from "class-variance-authority"
 import { NavigationMenu as NavigationMenuPrimitive } from "radix-ui"
