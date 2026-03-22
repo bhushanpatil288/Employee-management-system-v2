@@ -39,7 +39,7 @@ const formSchema = z.object({
 })
 
 const AddEmployees = () => {
-  const { setEmployees } = useEmployees();
+  const { addEmployee } = useEmployees();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -54,9 +54,7 @@ const AddEmployees = () => {
   const { reset } = form
 
   function onSubmit(data: z.infer<typeof formSchema>) {
-    // setEmployees([...employees, {...data, id: Date.now()}]);
-    setEmployees((prev :[])=> [...prev, {...data, id: Date.now()}])
-    console.log("Form submitted:", data)
+    addEmployee(data);
     reset()
   }
 
