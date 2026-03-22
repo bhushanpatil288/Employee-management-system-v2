@@ -1,73 +1,60 @@
-# React + TypeScript + Vite
+# Employee Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A single-page React application for managing employee records: add new staff, view everyone in a table, edit details in a modal, and delete entries. There is no backend; data persists in the browser using `localStorage`, so records survive page refreshes on the same device and browser.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Dashboard (Home)** — Landing page with shortcuts to add employees or open the full list.
+- **Add employee** — Form validated with [Zod](https://zod.dev/) and [React Hook Form](https://react-hook-form.com/) (name, age, department, position).
+- **View all** — Sortable-style table listing employees with row actions.
+- **Edit** — Dialog-based editor for an existing row.
+- **Delete** — Remove an employee from the list (with confirmation-style feedback via toast alerts).
+- **Dark mode** — Toggle in the navigation bar; preference is applied to the document root for Tailwind dark styling.
+- **Toast feedback** — Success toasts when adding, updating, or deleting (SweetAlert2).
 
-## React Compiler
+## Tech stack
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+| Area        | Choice |
+|------------|--------|
+| UI         | React 19, TypeScript |
+| Build      | Vite 7 (`@vitejs/plugin-react-swc`) |
+| Styling    | Tailwind CSS 4, Geist font |
+| Components | Radix UI primitives, shadcn-style UI components, Lucide icons |
+| Forms      | React Hook Form, Zod, `@hookform/resolvers` |
+| Routing    | React Router 7 |
+| State      | React Context (`EmployeesContext`, `ThemeContext`) |
 
-## Expanding the ESLint configuration
+## Getting started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**Requirements:** Node.js 20+ (or current LTS) and npm.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Open the URL shown in the terminal (typically `http://localhost:5173`).
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Scripts
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+| Command        | Description |
+|----------------|-------------|
+| `npm run dev`    | Start Vite dev server with HMR |
+| `npm run build`  | Typecheck (`tsc -b`) then production build to `dist/` |
+| `npm run preview`| Serve the production build locally |
+| `npm run lint`   | Run ESLint on the project |
+
+## Project layout (high level)
+
+- `src/pages/` — Route screens: `Home`, `AddEmployees`, `Employees`
+- `src/components/` — Shared layout (`Layout`) and UI primitives under `components/ui/`
+- `src/components/EmployeesPage/` — Employee-specific UI (e.g. edit modal)
+- `src/context/` — Global employee list and theme providers
+- `src/constants/` — Static lists such as departments and positions
+- `public/` — Static assets (e.g. home page image)
+
+Path alias: imports using `@/` resolve to `src/` (see `tsconfig.app.json` and `vite.config.ts`).
+
+## Data storage
+
+Employee data is stored under the key `employees` in `localStorage` as JSON. Clearing site data or using another browser profile starts from the app’s built-in sample employees until you add or change records again.

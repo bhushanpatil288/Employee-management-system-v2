@@ -8,15 +8,16 @@ const Employees = () => {
 
   return (
     <div className="flex justify-center p-3">
-      <table className="shadow-lg rounded-xl overflow-hidden">
-        <tbody><tr>
-          <th className="bg-primary text-white  border dark:text-black dark:border-gray/80 text-left px-8 py-4">No.</th>
-          <th className="bg-primary text-white  border dark:text-black dark:border-gray/80 text-left px-8 py-4">Name</th>
-          <th className="bg-primary text-white  border dark:text-black dark:border-gray/80 text-left px-8 py-4">Age</th>
-          <th className="bg-primary text-white  border dark:text-black dark:border-gray/80 text-left px-8 py-4">Department</th>
-          <th className="bg-primary text-white  border dark:text-black dark:border-gray/80 text-left px-8 py-4">Position</th>
-          <th className="bg-primary text-white  border dark:text-black dark:border-gray/80 text-left px-8 py-4">Action</th>
-        </tr>
+      <table className="shadow-lg rounded-xl overflow-hidden text-xs md:text-sm">
+        <tbody>
+          <tr>
+            <th className="bg-primary text-white  border dark:text-black dark:border-gray/80 text-left px-8 py-4">No.</th>
+            <th className="bg-primary text-white  border dark:text-black dark:border-gray/80 text-left px-8 py-4">Name</th>
+            <th className="bg-primary text-white  border dark:text-black dark:border-gray/80 text-left px-8 py-4">Age</th>
+            <th className="bg-primary text-white  border dark:text-black dark:border-gray/80 text-left px-8 py-4">Department</th>
+            <th className="bg-primary text-white  border dark:text-black dark:border-gray/80 text-left px-8 py-4">Position</th>
+            <th className="bg-primary text-white  border dark:text-black dark:border-gray/80 text-left px-8 py-4">Action</th>
+          </tr>
           {employees.map((e, idx) => {
             return (
               <tr key={e.id}>
@@ -28,7 +29,7 @@ const Employees = () => {
                 <td className="border dark:bg-secondary px-8 py-4">
                   <div className="flex gap-1">
                     <EditEmployeeModal employeeData={e} />
-                    <Button variant={"destructive"} className="cursor-pointer" onClick={()=>deleteEmployee(e.id)}>
+                    <Button variant={"destructive"} className="cursor-pointer" onClick={() => deleteEmployee(e.id)}>
                       <OctagonX />
                     </Button>
                   </div>
@@ -36,8 +37,9 @@ const Employees = () => {
               </tr>
             )
           })}
-        </tbody></table>
-        
+        </tbody>
+      </table>
+
 
 
     </div>
