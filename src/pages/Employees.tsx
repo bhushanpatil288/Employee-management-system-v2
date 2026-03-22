@@ -1,8 +1,10 @@
 import { Button } from "../components/ui/button";
 import { useEmployees } from "../context/EmployeesContext"
+import { OctagonX } from "lucide-react"
+import { EditEmployeeModal } from "../components/EmployeesPage/EditEmployeeModal";
 
 const Employees = () => {
-  const { employees, setEmployees } = useEmployees();
+  const { employees } = useEmployees();
 
   return (
     <div className="flex justify-center p-3">
@@ -25,14 +27,17 @@ const Employees = () => {
                 <td className="border dark:bg-secondary px-8 py-4">{e.department}</td>
                 <td className="border dark:bg-secondary px-8 py-4">
                   <div className="flex gap-1">
-                    <Button variant={"default"} className="cursor-pointer">Edit</Button>
-                    <Button variant={"destructive"} className="cursor-pointer">Delete</Button>
+                    <EditEmployeeModal employeeData={e} />
+                    <Button variant={"destructive"} className="cursor-pointer">
+                      <OctagonX />
+                    </Button>
                   </div>
                 </td>
               </tr>
             )
           })}
         </tbody></table>
+        
 
 
     </div>

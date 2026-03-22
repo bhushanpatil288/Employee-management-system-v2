@@ -1,3 +1,4 @@
+import { departments, positions } from "../constants/data"
 import { Button } from "../components/ui/button"
 import {
   Field,
@@ -22,21 +23,6 @@ import { useForm, Controller } from "react-hook-form";
 import * as z from "zod";
 import { useEmployees } from "../context/EmployeesContext";
 
-const departments = [
-  { id: 1, name: "Engineering" },
-  { id: 2, name: "Human Resources" },
-  { id: 3, name: "Marketing" },
-  { id: 4, name: "Finance" },
-  { id: 5, name: "Customer Support" }
-];
-
-const positions = [
-  { id: 1, title: "Software Engineer" },
-  { id: 2, title: "HR Manager" },
-  { id: 3, title: "Marketing Specialist" },
-  { id: 4, title: "Financial Analyst" },
-  { id: 5, title: "Support Executive" }
-];
 
 
 const formSchema = z.object({
