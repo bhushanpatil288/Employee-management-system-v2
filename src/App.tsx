@@ -5,6 +5,8 @@ import Layout from "./components/Layout";
 
 import Home from "./pages/Home";
 import AddEmployees from "./pages/AddEmployees";
+import Employees from "./pages/Employees";
+
 const App = () => {
   return (
     <ThemeContextProvider>
@@ -14,6 +16,7 @@ const App = () => {
             <Routes>
               <Route path="/" element=<Home /> />
               <Route path="/add" element=<AddEmployees /> />
+              <Route path="/all" element=<Employees /> />
             </Routes>
           </Layout>
         </BrowserRouter>
