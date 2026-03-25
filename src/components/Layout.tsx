@@ -45,6 +45,14 @@ const Layout = ({ children }: { children: ReactNode }) => {
             </NavigationMenuItem>
 
             <NavigationMenuItem>
+              <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                <NavLink to="/restore"
+                  className={({ isActive }) => isActive ? "active" : ""}
+                >Deleted Employees</NavLink>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+
+            <NavigationMenuItem>
                 <Button variant={"ghost"} className="hover:bg-primary hover:text-white cursor-pointer p-4 rounded-full" onClick={()=>{setIsDark(!isDark)}}>
                   {
                     isDark ? <SunMedium /> : <MoonStar />
