@@ -1,7 +1,6 @@
 import { Button } from "../components/ui/button";
 import { useEmployees } from "../context/EmployeesContext"
 import { History } from "lucide-react"
-import { EditEmployeeModal } from "../components/EmployeesPage/EditEmployeeModal";
 
 const RestoreEmployees = () => {
   const { deletedEmployees, restoreEmployee } = useEmployees();
