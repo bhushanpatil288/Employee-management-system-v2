@@ -54,7 +54,7 @@ const AddEmployees = () => {
   const { reset } = form
 
   function onSubmit(data: z.infer<typeof formSchema>) {
-    addEmployee(data);
+    addEmployee(data, "Employee Added");
     reset()
   }
 
